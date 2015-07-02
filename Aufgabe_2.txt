@@ -1,0 +1,58 @@
+Aufgabe 2:
+
+Phase 1:
+
+- Externe Symbole: print (in cntdwn.o), exit (in cntdwn.o)
+- Startadressen:
+	Modul cntdwn: 0x08048000 (Linux-Standard)
+	Sektion text in cntdwn: 0x08048000
+	Sektion data in cntdwn: 0x0804807D
+	Modul libc: 0x08048094	 
+	Sektion text in libc: 0x08048094
+- Adressen von Symbolen:
+	cntdwn:
+		main: 0x08048000
+		msg: 0x0804807D
+	libc:
+		printf: 0x08048094
+		exit: 0x0804817E
+		malloc: 0x080481CE
+		scanf: 0x080482D2
+		free: 0x080484F2
+		
+Phase 2:
+
+- Sektionen an die oben festgelegten Adressen laden
+- Anpassung von Referenzen innerhalb von Modulen (Relocation)
+	An Adresse 0x0804802E soll über 4 Bytes die relative Adresse 0x7D (.data von cntdwn) addiert werden
+	An Adresse 0x08048034 soll über 4 Bytes die relative Adresse 0x7D (.data von cntdwn) addiert werden
+- Anpassung von Referenzen zwischen Modulen (Linking)
+	An Adresse 0x0804803A soll über 4 Bytes die absolute Adresse 0x08048094 (print, printf von libc) addiert werden
+	An Adresse 0x0804805E soll über 4 Bytes die absolute Adresse 0x0804817E (exit von libc) addiert werden
+
+
+
+Nach Abschluss:
+
+Endgültige Adressen der relokierten Adressreferenzen:
+	Für die 1. Relocation: 0x0804802E + 0x7D = 0x080480AB
+	Für die 2. Relocation: 0x08048034 + 0x7D = 0x080480B1
+Für das Linking ergeben sich (für print und exit) die absoluten Adressen von print und exit.
+
+ESTAB:    printf: 0x08048094
+	  exit: 0x0804817E
+	  malloc: 0x080481CE
+	  scanf: 0x080482D2
+	  free: 0x080484F2
+PROGADDR: 0x08048000
+EXECADDR: 0x08048000 (main)
+
+Speicheraufteilung (Sektionen enthalten T-Datensätze):
+
+   Adresse:     |		       | 
+   0x08048000	|Sektion text in cntdwn|  \
+		|		       |   Modul cntdwn (main, msg)
+   0x0804807D	|Sektion data in cntdwn|  /
+		|		       |	
+   0x08048094	|Sektion text in libc  |  |Modul libc (printf, exit, malloc, scanf, free)	
+		|		       |

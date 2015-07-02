@@ -1,0 +1,12 @@
+Aufgabe 3:
+
+Es existiert nun nur noch die Datei cntdwn.o, die alle Symbole enthält, auf die während des Programms verwiesen werden - alle ursprünglich externen Symbole befinden sich nun in cntdwn.o, die Funktionen wurden kopiert. Um keine überflüssigen Symbole zu enthalten, werden nur die Funktionen kopiert, die cntdwn auch verwendet.
+Die Adressen der Symbole müssen während der Relocation/ des Linkings angepasst werden.
+Da die Symbole nicht mehr als extern angegeben werden, existieren in der .o-Datei auch keine M-Datensätze mehr, die Linking hervorrufen würden.
+Es wird also nur Relocation durchgeführt.
+Die M-Datensätze dazu wurden in der Assemblierung erstellt.
+Die cntdwn.o-Datei hat dann einen Aufbau der Form:
+H,S,D,T...,M,E 
+Dabei treten keine R-Datensätze auf, da diese eine Einbeziehung von externen Symbolen bedeuten würden und keine M-Datensätze, die auf externe Symbole zurückgreifen.
+Dann wird cntdwn.o geladen und ausgeführt.
+
